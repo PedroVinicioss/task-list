@@ -8,9 +8,13 @@ Route::get('/', function () {
 
 Route::get('/hello', function () {
     return 'Hello';
-});
+})->name('hello'); // nomeando a rota
 
 Route::get('/greet/{name}', function ($name) {
     return 'Hello ' . $name . '!';
 })->where('name', '[A-Za-z]+'); //não aceita números e caracteres especiais
+
+Route::fallback(function () {
+    return 'Still got somewhere!';
+});
 
