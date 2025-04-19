@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Http\Response as LaravelResponse;
 use Illuminate\Support\Facades\Route;
 
 class Task
@@ -55,31 +57,26 @@ $tasks = [
   ),
 ];
 
-Route::get('/', function () use ($tasks) {
+Route::get('/tasks', function () use ($tasks) {
     return view('index', [
         'tasks' => $tasks
     ]);
 })->name('tasks.index');
 
-Route::get('/{id}', function ($id) use ($tasks) {
-    // $task = collect($tasks)->firstWhere('id', $id);
-    // if (!$task) {
-    //     abort(404);
-    // }
-    // return view('show', [
-    //     'task' => $task
-    // ]);
-    return 'task ' . $id;
+Route::get('/tasks/{id}', function ($id) use ($tasks) {
+    $task = collect($tasks)->firstWhere('id', $id);
+    if (!$task) {
+        abort(LaravelResponse::HTTP_NOT_FOUND, 'Task not found');
+    }
+    return view('show', [
+        'task' => $task
+    ]);
 })->name('tasks.show');
 
-// Route::get('/hello', function () {
-//     return 'Hello';
-// })->name('hello'); // nomeando a rota
+Route::get('/', function () {
+    return redirect()->route('tasks.index');
+})->name('home');
 
-// Route::get('/greet/{name}', function ($name) {
-//     return 'Hello ' . $name . '!';
-// })->where('name', '[A-Za-z]+'); //não aceita números e caracteres especiais
-
-// Route::fallback(function () {
-//     return 'Still got somewhere!';
-// });
+Route::fallback(function () {
+    return 'Still got somewhere!';
+});
