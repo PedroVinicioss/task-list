@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return 'Main Page';
+    return view('index', [
+        // 'name' => 'Lucas',
+        'age' => 22,
+        'hobbies' => ['programming', 'music', 'sports'],
+    ]);
 });
 
 Route::get('/hello', function () {
