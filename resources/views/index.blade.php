@@ -1,13 +1,28 @@
-Hello Im a blade template
+<h1>
+    The list of tasks
+</h1>
 
-@isset($name)
-    The name is {{ $name }}
-@endisset
+<div>
+    {{-- @if (count($tasks))
+        @foreach ($tasks as $task)
+            <div>
+                <h2>{{ $task->title }}</h2>
+            </div>
+            <hr>
+        @endforeach
+    @else
+        <div>There are no tasks!</div>
+    @endif --}}
 
-The age is {{ $age }}
-The hobbies are:
-<ul>
-    @foreach ($hobbies as $hobby)
-        <li>{{ $hobby }}</li>
-    @endforeach
-</ul>
+    <br>
+    <br>
+
+    @forelse ($tasks as $task)
+        <div>
+            <a href="{{ route('tasks.show', $task->id) }}">{{ $task->title }}</a>
+        </div>
+        <hr>
+    @empty
+        <div>There are no tasks!</div>
+    @endforelse
+</div>
